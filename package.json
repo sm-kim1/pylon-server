@@ -1,0 +1,21 @@
+{
+  "name": "pylon-server-monorepo",
+  "version": "0.1.0",
+  "description": "Pylon remote access server - Raspberry Pi Connect-like system",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "type-check": "pnpm -r run type-check"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
