@@ -21,25 +21,58 @@ shared → server → web 순서로 의존성 설치 및 빌드를 자동 수행
 
 ## 실행
 
-```bash
-# 프로덕션
-cd server && npm run start
+### 전체 (개발 모드)
 
-# 개발 모드 (server + web 동시 hot-reload)
+```bash
 pnpm dev
+```
+
+server와 web을 동시에 hot-reload로 실행합니다.
+
+### Server 개별 실행
+
+```bash
+# 개발 모드 (tsx watch)
+cd server && npm run dev
+
+# 프로덕션 (빌드 후 실행)
+cd server && npm run build && npm run start
 ```
 
 | 포트 | 서비스 |
 |------|--------|
 | 3000 | API + WebSocket 서버 |
-| 5173 | Web 개발 서버 (Vite) |
+
+### Web 개별 실행
+
+```bash
+cd web && npm run dev
+```
+
+| 포트 | 서비스 |
+|------|--------|
+| 5173 | Vite 개발 서버 (API/WS를 서버로 프록시) |
+
+프로덕션 배포 시:
+```bash
+cd web && npm run build    # web/dist/에 정적 파일 생성
+```
+
+`web/dist/`를 nginx 등 웹 서버로 서빙하고, API/WebSocket 요청을 Pylon Server로 리버스 프록시합니다.
 
 ### 환경 변수
 
+**Server:**
 ```bash
 PORT=3000              # 서버 포트 (기본: 3000)
 NODE_ENV=production    # development | production | test
 LOG_LEVEL=info         # trace | debug | info | warn | error | fatal
+```
+
+**Web (Vite):**
+```bash
+VITE_API_TARGET=http://localhost:8080    # API 프록시 대상 (개발 모드)
+VITE_WS_URL=ws://localhost:8080/ws       # WebSocket URL 오버라이드 (선택)
 ```
 
 ## 패키지 구조
@@ -99,7 +132,4 @@ REST API:
 
 ### Web 환경 변수
 
-```bash
-VITE_API_TARGET=http://localhost:8080    # API 프록시 대상 (개발 모드)
-VITE_WS_URL=ws://localhost:8080/ws       # WebSocket URL 오버라이드 (선택)
-```
+실행 섹션의 환경 변수를 참고하세요.
